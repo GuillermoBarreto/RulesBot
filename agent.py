@@ -87,7 +87,11 @@ def dispatch_tool(tool_name: str, tool_args: dict) -> str:
     """Route a tool call to the correct function and return the result as a JSON string."""
     print(f"  → Tool call: {tool_name}({tool_args})")
     if tool_name == "lookup_plant":
-        result = lookup_plant(tool_args["plant_name"])
+        plant_name = tool_args.get("plant_name")
+        if not plant_name:
+            result = {"error": "Missing required argument: plant_name"}
+        else:
+            result = lookup_plant(plant_name)
     elif tool_name == "get_seasonal_conditions":
         result = get_seasonal_conditions(tool_args.get("season"))
     else:

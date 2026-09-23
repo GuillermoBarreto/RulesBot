@@ -16,4 +16,6 @@ MAX_TOOL_ROUNDS = 5   # Maximum tool-calling loops before stopping
                       # Prevents runaway agent loops
 
 # --- Data ---
-DATA_PATH = "./data"
+# Resolve relative to this file so the app works no matter which
+# working directory it is launched from.
+DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")

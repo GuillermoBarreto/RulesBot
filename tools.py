@@ -70,9 +70,11 @@ def get_seasonal_conditions(season: str | None = None) -> dict:
     """
     VALID_SEASONS = {"spring", "summer", "fall", "winter"}
 
-    if season and season.lower() in VALID_SEASONS:
+    # Normalize caller input so " Summer " doesn't silently fall back to auto-detect.
+    normalized = season.strip().lower() if season else ""
+    if normalized in VALID_SEASONS:
         # Caller specified a valid season — use it directly
-        season_key = season.lower()
+        season_key = normalized
         detected = False
     else:
         # Auto-detect from the current month using the _MONTH_TO_SEASON mapping

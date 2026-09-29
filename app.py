@@ -4,9 +4,17 @@ import gradio as gr
 from config import DATA_PATH
 from agent import run_agent
 
-# Load plant list for the sidebar
-with open(os.path.join(DATA_PATH, "plants.json"), encoding="utf-8") as f:
-    _plants = json.load(f)
+# Load plant list for the sidebar. Wrap the raw I/O errors so a missing or
+# corrupt data file points the user at the expected DATA_PATH instead of a
+# bare FileNotFoundError/JSONDecodeError traceback.
+try:
+    with open(os.path.join(DATA_PATH, "plants.json"), encoding="utf-8") as f:
+        _plants = json.load(f)
+except (OSError, json.JSONDecodeError) as e:
+    raise RuntimeError(
+        f"Could not load the plant database from "
+        f"{os.path.join(DATA_PATH, 'plants.json')}: {e}"
+    ) from e
 
 _plant_names = sorted(p["display_name"] for p in _plants.values())
 

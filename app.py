@@ -16,7 +16,9 @@ except (OSError, json.JSONDecodeError) as e:
         f"{os.path.join(DATA_PATH, 'plants.json')}: {e}"
     ) from e
 
-_plant_names = sorted(p["display_name"] for p in _plants.values())
+_plant_names = sorted(
+    plant.get("display_name", slug) for slug, plant in _plants.items()
+)
 
 EXAMPLE_QUESTIONS = [
     "How do I care for my pothos?",

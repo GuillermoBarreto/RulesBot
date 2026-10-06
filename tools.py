@@ -19,6 +19,9 @@ _MONTH_TO_SEASON = {
     9: "fall",  10: "fall",  11: "fall",
 }
 
+# The only season keys get_seasonal_conditions() will accept from callers.
+VALID_SEASONS = frozenset(_MONTH_TO_SEASON.values())
+
 
 def lookup_plant(plant_name: str) -> dict:
     """
@@ -68,8 +71,6 @@ def get_seasonal_conditions(season: str | None = None) -> dict:
 
     Pre-implemented — read through this and the spec before working on lookup_plant().
     """
-    VALID_SEASONS = {"spring", "summer", "fall", "winter"}
-
     # Normalize caller input so " Summer " doesn't silently fall back to auto-detect.
     normalized = season.strip().lower() if season else ""
     if normalized in VALID_SEASONS:

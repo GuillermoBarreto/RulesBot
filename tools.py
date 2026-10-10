@@ -72,7 +72,9 @@ def get_seasonal_conditions(season: str | None = None) -> dict:
     Pre-implemented — read through this and the spec before working on lookup_plant().
     """
     # Normalize caller input so " Summer " doesn't silently fall back to auto-detect.
-    normalized = season.strip().lower() if season else ""
+    # A non-string truthy value (e.g. 5 from unvalidated LLM JSON) has no
+    # .strip(): fall back to auto-detect instead of crashing the agent turn.
+    normalized = season.strip().lower() if isinstance(season, str) else ""
     if normalized in VALID_SEASONS:
         # Caller specified a valid season — use it directly
         season_key = normalized

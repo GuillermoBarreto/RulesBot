@@ -5,10 +5,9 @@ load_dotenv()
 
 # --- LLM ---
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise RuntimeError(
-        "GROQ_API_KEY is not set. Add it to a .env file or your environment before running the agent."
-    )
+# No module-level key check here: importing config (e.g. just for DATA_PATH in
+# app.py) must work without an LLM key. agent._get_client() validates the key
+# lazily, right before the first chat message needs it.
 LLM_MODEL = "llama-3.3-70b-versatile"
 
 # --- Agent ---

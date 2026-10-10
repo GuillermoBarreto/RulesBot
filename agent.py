@@ -15,6 +15,10 @@ def _get_client() -> Groq:
     """
     global _client
     if _client is None:
+        if not GROQ_API_KEY:
+            raise RuntimeError(
+                "GROQ_API_KEY is not set. Add it to a .env file or your environment before chatting."
+            )
         _client = Groq(api_key=GROQ_API_KEY)
     return _client
 
